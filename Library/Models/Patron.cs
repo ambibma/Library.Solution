@@ -6,7 +6,7 @@ namespace Library.Models
 {
   public class Patron
   {
-    public string PatronId {get;set;}
+    public int PatronId {get;set;}
     public string Name {get; set;}
     
     //public int IsCardHolder{get;set;} //route to create cardholder form
