@@ -1,20 +1,26 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Library.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace Library.Controllers
 {
+    [Authorize]
     public class ItemsController : Controller
     {
         private readonly LibraryContext _db;
-        public ItemsController(LibraryContext db)
+        private readonly UserManager<ApplicationUser> _userManager;
+        public ItemsController(UserManager<ApplicationUser> userManager, LibraryContext db)
         {
             _db = db;
         }
-
+        [AllowAnonymous] 
         public ActionResult Index()
         {
             List<Item> model = _db.Items.ToList();
@@ -27,8 +33,12 @@ namespace Library.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Item item)
+        public async Task<ActionResult> Create(Item item)
         {
+            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+
             _db.Items.Add(item);
             _db.SaveChanges();
             return RedirectToAction("Index");
