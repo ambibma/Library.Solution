@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Library.Models;
+using Microsoft.AspNetCore.Identity;
 
 namespace Library
 {
@@ -22,6 +23,11 @@ namespace Library
                         )
                       );
 
+      // New code below!!
+      builder.Services.AddIdentity<ApplicationUser, IdentityRole>()
+                .AddEntityFrameworkStores<LibraryContext>()
+                .AddDefaultTokenProviders();
+
       WebApplication app = builder.Build();
 
       // app.UseDeveloperExceptionPage();
@@ -30,9 +36,14 @@ namespace Library
 
       app.UseRouting();
 
+      // New code below!
+      app.UseAuthentication(); 
+      app.UseAuthorization();
+
       app.MapControllerRoute(
           name: "default",
-          pattern: "{controller=Home}/{action=Index}/{id?}");
+          pattern: "{controller=Home}/{action=Index}/{id?}"
+        );
 
       app.Run();
     }

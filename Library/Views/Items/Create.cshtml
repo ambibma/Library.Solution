@@ -1,0 +1,22 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Library.Models.Item
+@using Library.Models
+
+<h4>Create a new item</h4
+
+@using (Html.BeginForm())
+{
+  @Html.LabelFor(model => model.DisplayName, new { DisplayName = "Item Name"})
+  @Html.TextBoxFor(model => model.DisplayName, null, new {required="required"})
+  <br>
+  @Html.Label("Select an item type")
+  @Html.DropDownListFor(model => model.ItemType,
+    new SelectList(Enum.GetValues(typeof(ItemType))),
+    "Select Item Type",
+    new { required="required"})
+  <input type="submit" value="Save" />
+}
+
