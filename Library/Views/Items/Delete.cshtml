@@ -1,0 +1,15 @@
+@{
+  Layout = "_Layout";
+}
+
+@model Library.Models.Item
+
+<h2>Are you sure you want to delete this?</h2>
+
+@Html.DisplayFor(model => model.DisplayName)
+@using (Html.BeginForm())
+{
+  <input type = "submit" value="Delete" />
+}
+
+@Html.ActionLink("Back to List", "Index")

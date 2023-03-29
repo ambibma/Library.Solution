@@ -8,5 +8,6 @@ namespace Library.Models
     public Item Item {get; set;}
     public int PatronId { get; set; }
     public Patron Patron {get; set;}
+    // public ApplicationUser User { get; set; }  
   }
 }

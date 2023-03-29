@@ -9,9 +9,10 @@ namespace Library.Models
     public ItemType ItemType {get;set;}
 
     public string DisplayName {get;set;}
-    public ApplicationUser User {get;set;}
+    // public ApplicationUser User {get;set;}
     public List<ItemProperty> JoinEntities {get;}
-
+    
+    // public List<Reservation> Reservations { get; set; }  ---is that it?
   }
   
   public enum ItemType

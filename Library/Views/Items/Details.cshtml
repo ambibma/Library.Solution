@@ -1,0 +1,33 @@
+@{
+  Layout = "_Layout";
+}
+
+@using Library.Models
+@model Library.Models.Item
+
+<h2>Item Details</h2>
+<hr />
+<h3>@Html.Label("Type"): @Html.DisplayFor(model => model.ItemType)</h3>
+<h3>@Html.Label("Title"): @Html.DisplayFor(model => model.DisplayName)</h3>
+
+@* @if(@Model.JoinEntities.Count == 0)
+{
+  <p>This item doesn't have any properties yet!</p>
+  
+}
+  else
+  {
+  <h4>This item has the following [name of join entity??]</h4>
+  <ul>
+  @foreach(ItemProperty join in Model.JoinEntities)
+  {
+    <li>Property: @join.Property.</li>
+    @* @using (Html.BeginForm("DeleteJoin", "Items")) *@
+    @* {
+      @Html.Hidden("joinId", @join....) *@
+      @* <input type="submit" value="Delete" /> *@
+  @* }
+    </ul>
+  } *@
+  
+<p> @Html.ActionLink("Delete Item", "Delete", new { id = @Model.ItemId })</p>

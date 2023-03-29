@@ -8,6 +8,7 @@ namespace Library.Models
   {
     public int PatronId {get;set;}
     public string Name {get; set;}
+    public ApplicationUser User { get; set; }  
     
     //public int IsCardHolder{get;set;} //route to create cardholder form
     //public string Address{get; set;}

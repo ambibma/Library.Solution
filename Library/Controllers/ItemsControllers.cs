@@ -1,17 +1,17 @@
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Library.Models;
 using System.Collections.Generic;
 using System.Linq;
-using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using System.Security.Claims;
 
 namespace Library.Controllers
 {
-    [Authorize]
+    [Authorize] //[Authorize(Roles = "Administrator")]
     public class ItemsController : Controller
     {
         private readonly LibraryContext _db;
@@ -26,24 +26,19 @@ namespace Library.Controllers
             List<Item> model = _db.Items.ToList();
             return View(model);
         }
-
         public ActionResult Create()
         {
             return View();
         }
 
         [HttpPost]
-        public async Task<ActionResult> Create(Item item)
+        public ActionResult Create(Item item)
         {
-            string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
-
             _db.Items.Add(item);
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
-
+        [AllowAnonymous] 
         public ActionResult Details(int id)
         {
             Item thisItem = _db.Items

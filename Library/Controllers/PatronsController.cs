@@ -4,16 +4,24 @@ using Microsoft.AspNetCore.Mvc;
 using Library.Models;
 using System.Collections.Generic;
 using System.Linq;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
+using System.Threading.Tasks;
+using System.Security.Claims;
 
 namespace Library.Controllers 
 {
+  [Authorize]
   public class PatronsController : Controller
+  
   {
     private readonly LibraryContext _db;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public PatronsController(LibraryContext db)
+    public PatronsController(UserManager<ApplicationUser> userManager, LibraryContext db)
     {
       _db =db;
+      _userManager = userManager;
     }
    public ActionResult Index()
    {
@@ -63,6 +71,54 @@ namespace Library.Controllers
       _db.SaveChanges();
       return RedirectToAction("Index");
     }
+
+    
+    //[HttpPost]
+    // public async Task<ActionResult> Create(Item item, int CategoryId)
+    // {
+    //   if (!ModelState.IsValid)
+    //   {
+    //     ViewBag.CategoryId = new SelectList(_db.Categories, "CategoryId", "Name");
+    //     return View(item);
+    //   }
+    //   else
+    //   {
+    //     string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+    //     ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+    //     reservation.User = currentUser;
+    //     _db.Items.Add(item);
+    //     _db.SaveChanges();
+    //     return RedirectToAction("Index");
+    //   }
+    // }
+    public ActionResult Schedule(int id)
+    {
+      Patron thisPatron = _db.Patrons.FirstOrDefault(patrons => patrons.PatronId == id);
+      ViewBag.DoctorId = new SelectList(_db.Doctors, "DoctorId", "Name");
+      return View(thisPatient);
+    }
+    [HttpPost]
+    public async Task<ActionResult> CreateReservation(int patronId, int itemId)
+    {
+      if (!ModelState.IsValid)
+      {
+        ViewBag.ItemId = new SelectList(_db.Items, "ItemId", "DisplayName");
+        return View(itemId);
+      }
+      else
+      {
+        string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        // build reservation id
+        ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+        patron.User = currentUser;
+        // upload to database???
+        _db.Reservations.Add(itemId);
+        _db.SaveChanges();
+        return RedirectToAction("Index");
+      }
+    }
+
+
     
 
   }
